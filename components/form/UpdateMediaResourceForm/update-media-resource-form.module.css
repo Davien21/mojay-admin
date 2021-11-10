@@ -1,0 +1,78 @@
+.container {
+  max-width: 700px;
+  justify-self: flex-start;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.container form label {
+  width: auto;
+}
+
+.container form * {
+  font-size: 97%;
+}
+
+.container form input {
+  font-size: 97%;
+}
+
+.container button {
+  font-weight: 550;
+}
+
+.upload-image {
+  /* background: #f8fafc; */
+  position: relative;
+  height: 100%;
+  width: 100%;
+  /* height: 300px; */
+  /* border-radius: 20px; */
+}
+
+.upload-image img {
+  cursor: pointer;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  /* border-radius: 20px; */
+}
+
+@media screen and (min-width: 1280px) {
+  .upload-image {
+    height: 150px;
+  }
+  .upload-image img {
+    height: 150px;
+  }
+}
+
+.upload-image input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.main-btns-container {
+  border-top: 1px solid #dee2e6;
+  padding: 24px 0px;
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  background: #fff;
+  width: calc(100% - 40px);
+}
+
+.editor-container {
+  position: sticky;
+  top: 0;
+}
+
+.error-message {
+  position: absolute;
+  margin-top: 3px;
+  color: red;
+  font-size: 0.8rem !important;
+}

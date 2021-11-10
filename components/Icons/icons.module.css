@@ -1,0 +1,14 @@
+
+.container .toggle-password {
+  background-color: #eff3f6;
+  color: #6b7280;
+}
+
+.container .toggle-password svg {
+  vertical-align: text-bottom;
+  fill: none;
+  stroke: currentColor;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-width: 2;
+}

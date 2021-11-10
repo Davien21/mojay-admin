@@ -1,0 +1,74 @@
+.container {
+}
+
+.container .cards-container {
+}
+
+.container .card {
+  cursor: pointer;
+  display: block;
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  min-width: 280px;
+  padding: 16px;
+  position: relative;
+}
+
+@media screen and (min-width: 768px) {
+  .container .cards-container .card {
+    min-width: 350px;
+  }
+}
+
+.container .card:hover {
+  border: 1px solid #2563eb;
+}
+
+.container .card:hover .heading {
+  text-decoration: underline;
+  color: #2568ec;
+}
+
+.container .card:hover .number {
+  color: #000;
+}
+
+.container .card span {
+  /* display: block; */
+}
+
+.container .heading {
+  /* margin-bottom: 0px; */
+  font-size: 19px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.container .number {
+  font-weight: 300;
+}
+
+.container .add-btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  transition: background-color 80ms linear;
+  width: 32px;
+  height: 32px;
+  padding: 5px;
+  /* padding: 1rem 0.35rem; */
+  background-color: #ccd1d5;
+}
+
+.container .add-btn:hover {
+  background-color: #16a34a;
+}
+
+.container .add-btn svg,
+.container .add-btn svg path {
+  stroke: #fff;
+}

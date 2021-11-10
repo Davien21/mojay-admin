@@ -1,0 +1,60 @@
+.container {
+}
+
+.container label {
+  text-transform: capitalize;
+  font-weight: 550;
+  margin-bottom: 4px;
+}
+
+.container.error input {
+  /* outline: 2px solid red; */
+}
+
+.error-message {
+  position: absolute;
+  margin-top: 3px;
+  color: red;
+  font-size: 0.8rem !important;
+}
+
+.container input {
+  appearance: none;
+  background-color: #fafbfc;
+  border-color: #e1e5e9;
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  color: #374151;
+  font-size: 1rem;
+  height: 38px;
+  line-height: 38px;
+  outline: 0;
+  padding: 0px 12px;
+  resize: vertical;
+  -webkit-transition: background-color 130ms, box-shadow 130ms,
+    border-color 130ms;
+  transition: background-color 130ms, box-shadow 130ms, border-color 130ms;
+  width: 100%;
+}
+
+.container input:focus {
+  background-color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}
+
+.container .toggle-password {
+  background-color: #eff3f6;
+  color: #6b7280;
+}
+
+.container .toggle-password svg {
+  vertical-align: text-bottom;
+  fill: none;
+  stroke: currentColor;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-width: 2;
+}

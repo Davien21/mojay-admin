@@ -1,0 +1,11 @@
+.container form * {
+  font-size: 97%;
+}
+
+.container form input {
+  font-size: 97%;
+}
+
+.container button {
+  font-weight: 550;
+}
