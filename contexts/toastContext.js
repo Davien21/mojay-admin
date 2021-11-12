@@ -18,6 +18,7 @@ export function ToastProvider({ children }) {
       setToastType("success");
       setToastMessage(message);
     },
+    close: () => setIsDisplayingToast(false),
   };
 
   return (

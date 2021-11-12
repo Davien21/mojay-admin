@@ -2,16 +2,15 @@ import styles from "./login-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { login } from "../../../services/authService";
+import { login } from "../../../services/userService";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { setCookie } from "../../../services/cookieService";
+import { apiErrorMessage } from "../../../utils/handleAPIErrors";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
 
 const validationSchema = Yup.object({
-  email: Yup.string().email("Invalid Email").required("Email is required"),
-  password: Yup.string()
-    .min(5, "Password is too short")
-    .required("Password is required"),
+  email: Yup.string().required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const initialValues = {
@@ -21,15 +20,28 @@ const initialValues = {
 
 function LoginForm(props) {
   const router = useRouter();
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
 
   const handleSubmit = (values, { resetForm }) => {
-    const user = values;
-    console.log({ values });
     (async () => {
-      const token = await login(user);
-      setCookie("token", token);
-      localStorage.setItem("token", token);
-      router.push("/");
+      try {
+        setIsLoading(true);
+        const user = { ...values };
+        const token = (await login(user)).data.data;
+        console.log(token);
+        localStorage.setItem("token", token);
+        setIsLoading(false);
+        toast.success(`Login was successful`);
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      } catch (error) {
+        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
     })();
   };
 

@@ -5,6 +5,8 @@ import PowerButtonSvg from "./power.svg";
 import PlusSvg from "./plus.svg";
 import RightArrowSvg from "./right-arrow.svg";
 import WhiteCloseIcon from "./whiteCloseButton.svg";
+import GoodTickIcon from "./good-tick.svg";
+import ErrorIcon from "./error.svg";
 
 export {
   MojayFavicon,
@@ -14,4 +16,6 @@ export {
   PlusSvg,
   RightArrowSvg,
   WhiteCloseIcon,
+  GoodTickIcon,
+  ErrorIcon,
 };

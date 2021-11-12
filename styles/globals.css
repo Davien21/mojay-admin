@@ -2,13 +2,16 @@
 
 html {
   --primary-color: #d43742;
+  --secondary-red: #dc2626;
   --secondary-color: #eff3f6;
+  --primary-green: #11b84e;
   --app-blue: #2563eb;
   --small-text-size: 0.875rem;
   --sidebar-width: 300px;
   --header-z-index: 1000;
   --overlay-z-index: 1500;
   --modal-z-index: 1500;
+  --loader-z-index: 2000;
 }
 
 html,

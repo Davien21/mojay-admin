@@ -76,3 +76,12 @@
   color: red;
   font-size: 0.8rem !important;
 }
+
+.container form a {
+  color: #3b82f6;
+}
+
+.container form a:hover {
+  color: var(--app-blue);
+  text-decoration: underline;
+}

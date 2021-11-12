@@ -1,16 +1,17 @@
 import httpService from "./httpService";
 
-const route = `/news`;
+const route = `/media`;
 
-async function UpdateNewsItem(body, id) {
+async function UpdateMediaResource(body, id) {
   let bodyFormData = new FormData();
+  
   for (let eachKey in body) bodyFormData.append(eachKey, body[eachKey]);
   return await httpService.put(`${route}/${id}`, bodyFormData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 }
 
-async function CreateNewsItem(body) {
+async function CreateMediaResource(body) {
   let bodyFormData = new FormData();
   for (let eachKey in body) bodyFormData.append(eachKey, body[eachKey]);
 
@@ -19,4 +20,4 @@ async function CreateNewsItem(body) {
   });
 }
 
-export { UpdateNewsItem, CreateNewsItem };
+export { UpdateMediaResource, CreateMediaResource };

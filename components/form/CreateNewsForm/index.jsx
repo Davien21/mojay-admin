@@ -8,15 +8,18 @@ import { useRouter } from "next/router";
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 import { getToday } from "../../../utils/dateFormatter";
-import ToggleTabs from "../../toggleTabs";
 import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
+import { CreateNewsItem } from "../../../services/newsService";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
 
 const statuses = ["Published", "Draft"];
 
 function CreateNewsForm({ closeForm }) {
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
   const [image, setImage] = useState(null);
-  // const [activeTab, setActiveTab] = useState(null);
 
   const validationSchema = Yup.object({
     title: Yup.string()
@@ -48,8 +51,18 @@ function CreateNewsForm({ closeForm }) {
   // Object.assign(initialValues, user);
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    alert(JSON.stringify(values));
+    (async () => {
+      try {
+        setIsLoading(true);
+        await CreateNewsItem(values);
+        setIsLoading(false);
+        toast.success(`${values.title} was uploaded successfully`);
+      } catch (error) {
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({

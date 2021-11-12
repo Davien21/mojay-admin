@@ -3,8 +3,14 @@ import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState, useEffect } from "react";
+import { CreateMediaResource } from "../../../services/mediaService";
+import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
 
 function CreateMediaResourceForm({ closeForm }) {
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
   const [file, setFile] = useState(null);
 
   const validationSchema = Yup.object({
@@ -18,8 +24,20 @@ function CreateMediaResourceForm({ closeForm }) {
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    alert(JSON.stringify(values));
+    (async () => {
+      try {
+        setIsLoading(true);
+        await CreateMediaResource(values);
+        setIsLoading(false);
+        closeForm()
+        toast.success(`${values.name} was uploaded successfully`);
+        resetForm();
+      } catch (error) {
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({
@@ -41,7 +59,7 @@ function CreateMediaResourceForm({ closeForm }) {
             label="Name"
           />
 
-          <div className="mb-4 pb-2">
+          <div className="mb-4 pb-">
             <p className="font-weight-semi-bold mb-1">File</p>
             <label htmlFor="file" className={`${styles["upload-file"]} `}>
               {!file && (
@@ -93,7 +111,7 @@ function CreateMediaResourceForm({ closeForm }) {
               type="file"
               onChange={(event) => {
                 const file = event?.currentTarget?.files[0];
-                console.log(file)
+                console.log(file);
                 formik.setFieldValue("file", file);
                 setFile(file);
               }}
@@ -101,7 +119,7 @@ function CreateMediaResourceForm({ closeForm }) {
           </div>
         </div>
 
-        <hr className="hr-1 my-4" />
+        <hr className="hr-1 mt-0 mb-4" />
         <div className="container-fluid">
           <div className="row align-items-center">
             <div className="col-auto px-0 ">
@@ -118,7 +136,6 @@ function CreateMediaResourceForm({ closeForm }) {
                 onClick={(e) => {
                   e.preventDefault();
                   closeForm();
-                  // formik.resetForm()
                 }}
                 className=" btn light-btn"
               >

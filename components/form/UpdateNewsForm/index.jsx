@@ -9,21 +9,14 @@ import { Editor } from "@tinymce/tinymce-react";
 
 import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
-import { hasSameValues } from "./../../../utils/hasSameValues";
 import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
+import { UpdateNewsItem } from "../../../services/newsService";
+import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 
 const statuses = ["Published", "Draft"];
 
 function UpdateNewsForm({ news }) {
-  const { setIsLoading } = useLoadingContext();
-  // alert(JSON.stringify(news));
-  const [image, setImage] = useState(null);
-
-  if (news) {
-    delete news._id;
-    delete news.slug;
-  }
-
   const validationSchema = Yup.object({
     title: Yup.string()
       .min(2, "Title is too short")
@@ -36,29 +29,43 @@ function UpdateNewsForm({ news }) {
     content: Yup.mixed().required("Some content is required"),
     publishDate: Yup.mixed().required("The Published Date is required"),
     status: Yup.string().required(),
-    url: Yup.string(),
   });
 
-  let initialValues = {
-    title: "",
+  const [initialValues, setInitialValues] = useState({
+    title: news?.title,
     image: "",
-    altText: "",
-    shortDescription: "",
-    content: "",
-    publishDate: "",
-    status: "",
-    url: "",
-  };
+    altText: news?.altText,
+    shortDescription: news?.shortDescription,
+    content: news?.content,
+    publishDate: news?.publishDate,
+    status: news?.status,
+  });
 
-  Object.assign(initialValues, news);
+  const [allInfo, setAllInfo] = useState({ ...news });
+  const [image, setImage] = useState("");
 
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
+  
   const handleSubmit = (values, { resetForm }) => {
-    alert(JSON.stringify(values));
-    setIsLoading(true);
     (async () => {
-      // await subm
-    })()
-    // delete values?.url;
+      try {
+        const body = { ...values };
+        if (body.image === "") delete body.image;
+        if (body.image !== "") setImage("");
+        setIsLoading(true);
+        const info = (await UpdateNewsItem(body, allInfo?._id)).data.data;
+        toast.success(`${values.title} was updated successfully`);
+        setIsLoading(false);
+        setAllInfo(info);
+        setInitialValues(values);
+      } catch (error) {
+        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({

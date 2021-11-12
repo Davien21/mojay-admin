@@ -2,8 +2,8 @@
   width: var(--sidebar-width);
   position: sticky;
   top: 80px;
-  height: max-content;
-  z-index: 1000;
+  height: calc(100vh - 80px);
+  z-index: var(--header-z-index);
   background-color: #fff;
 }
 

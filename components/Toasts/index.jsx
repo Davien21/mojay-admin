@@ -1,6 +1,6 @@
 import { useToastContext } from "../../contexts/toastContext";
 import styles from "./toasts.module.css";
-import { WhiteCloseIcon } from "../../assets";
+import { ErrorIcon, GoodTickIcon, WhiteCloseIcon } from "../../assets";
 import { useEffect } from "react";
 
 function Toast() {
@@ -19,18 +19,22 @@ function Toast() {
     setTimeout(() => {
       if (!isDisplayingToast) return;
       setIsDisplayingToast(false);
-    }, 3000);
+    }, 3500);
   }, [isDisplayingToast, setIsDisplayingToast]);
 
   return (
     <div className={containerClass}>
       <button
-        className={`${styles["close-btn"]} p-3`}
+        className={`${styles["close-btn"]} btn pt-0`}
         onClick={() => setIsDisplayingToast(false)}
       >
         <WhiteCloseIcon />
       </button>
-      <p className={`${styles["heading"]} mb-2`}>{toastType}</p>
+      <div className="row align-items-center mb-2">
+        {toastType === "success" && <GoodTickIcon className="col-auto" />}
+        {toastType === "error" && <ErrorIcon className="col-auto" />}
+        <p className={`${styles["heading"]} mb-0`}>{toastType}</p>
+      </div>
       <p className={`${styles["message"]}`}>{toastMessage}</p>
       <div className={styles["progress-bar"]}></div>
     </div>

@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { Suspense } from "react";
 import UpdateNewsForm from "../../components/form/UpdateNewsForm";
 import { useDataContext } from "../../contexts/dataContext";
 import DashboardLayout from "./../../layouts/dashboard/index";
@@ -13,9 +12,7 @@ function NewsItem() {
   return (
     <div>
       <DashboardLayout>
-        <Suspense fallback={<div>loading...</div>}>
-          <UpdateNewsForm news={news} />
-        </Suspense>
+        {news && <UpdateNewsForm news={news} />}
       </DashboardLayout>
     </div>
   );

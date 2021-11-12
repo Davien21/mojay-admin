@@ -2,41 +2,107 @@ import styles from "./update-user-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
-import { useDataContext } from "../../../contexts/dataContext";
+import { useEffect, useState } from "react";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
+import { DeleteUser, UpdateUser } from "../../../services/userService";
+import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 import { useRouter } from "next/router";
+import { useDataContext } from "../../../contexts/dataContext";
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 function UpdateUserForm({ user }) {
+  const { mutate } = useDataContext();
   const [showPasswordField, setShowPasswordField] = useState(false);
-  const validationSchema = Yup.object({
-    name: Yup.string().min(2, "Name is too short").required("Name is required"),
-    email: Yup.string().email("Invalid Email").required("Email is required"),
-    password: showPasswordField
-      ? Yup.string()
-          .min(5, "Password is too short")
-          .required("Password is required")
-      : Yup.string(),
+  const [validationSchema, setValidationSchema] = useState(
+    Yup.object({
+      name: Yup.string()
+        .min(2, "Name is too short")
+        .required("Name is required"),
+      email: Yup.string().email("Invalid Email").required("Email is required"),
+      password: Yup.string(),
+    })
+  );
+
+  useEffect(() => {
+    let passwordValidation;
+    if (showPasswordField) {
+      passwordValidation = Yup.string()
+        .min(5, "Password is too short")
+        .required("Password is required");
+    }
+    if (!showPasswordField) passwordValidation = Yup.string();
+    setValidationSchema(
+      Yup.object({
+        name: Yup.string()
+          .min(2, "Name is too short")
+          .required("Name is required"),
+        email: Yup.string()
+          .email("Invalid Email")
+          .required("Email is required"),
+        password: passwordValidation,
+      })
+    );
+  }, [showPasswordField]);
+
+  const [initialValues, setInitialValues] = useState({
+    name: user?.name,
+    email: user?.email,
+    password: user?.password,
   });
 
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-  };
-    
-  console.log(user)
+  const [allInfo, setAllInfo] = useState({ ...user });
 
-  Object.assign(initialValues, user);
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
+
+  const router = useRouter();
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    alert(JSON.stringify(values));
+    (async () => {
+      try {
+        const body = { ...values };
+        setIsLoading(true);
+        const info = (await UpdateUser(body, allInfo?._id)).data.data;
+        toast.success(`${values.name} was updated successfully`);
+        setIsLoading(false);
+        setAllInfo(info);
+        setInitialValues(values);
+      } catch (error) {
+        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
+  };
+
+  const deleteUser = () => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        (await DeleteUser(allInfo?._id)).data.data;
+        setIsLoading(false);
+        toast.success(`User was deleted successfully`);
+        setTimeout(() => {
+          toast.close();
+          mutate(`${backendUrl}/all`);
+          router.push("/users");
+        }, 3500);
+      } catch (error) {
+        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
   return (
     <div className={`${styles["container"]} container-fluid`}>
@@ -56,8 +122,10 @@ function UpdateUserForm({ user }) {
           <div className="">
             <p className="font-weight-semi-bold mb-1">Password</p>
             <button
-              onClick={() => setShowPasswordField(true)}
-              className=" btn light-btn"
+              onClick={() => {
+                setShowPasswordField(true);
+              }}
+              className=" btn light-btn stick"
             >
               Change Password
             </button>
@@ -83,7 +151,13 @@ function UpdateUserForm({ user }) {
               {formik.dirty ? "Reset" : "No"} Changes
             </button>
           </div>
-          <div className="ml-auto col-auto">
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              deleteUser();
+            }}
+            className="ml-auto col-auto"
+          >
             <button className="btn light-red-btn">Delete</button>
           </div>
         </div>

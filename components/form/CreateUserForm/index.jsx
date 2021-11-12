@@ -3,10 +3,15 @@ import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { CreateUser } from "../../../services/userService";
+import { apiErrorMessage } from "../../../utils/handleAPIErrors";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
 import { useDataContext } from "../../../contexts/dataContext";
-import { useRouter } from "next/router";
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 function CreateUserForm({ closeForm }) {
+  const {mutate} = useDataContext()
   const [showPasswordField, setShowPasswordField] = useState(false);
   const validationSchema = Yup.object({
     name: Yup.string().min(2, "Name is too short").required("Name is required"),
@@ -24,14 +29,26 @@ function CreateUserForm({ closeForm }) {
     password: "",
   };
 
-  const { users } = useDataContext();
-  const { id } = useRouter().query;
-  const user = users?.[id];
-  Object.assign(initialValues, user);
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    alert(JSON.stringify(values));
+    (async () => {
+      try {
+        const body = { ...values };
+        setIsLoading(true);
+        (await CreateUser(body)).data.data;
+        closeForm();
+        setIsLoading(false);
+        toast.success(`${values.name} was created successfully`);
+        mutate(`${backendUrl}/all`)
+      } catch (error) {
+        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({

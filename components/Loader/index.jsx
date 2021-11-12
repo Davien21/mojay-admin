@@ -6,23 +6,25 @@ function Loader() {
   const [containerClass, setContainerClass] = useState(
     `${styles["container"]} `
   );
-  const { isLoading } = useLoadingContext();
+  const { isLoading, setIsLoading } = useLoadingContext();
 
   useEffect(() => {
     document.body.style.overflow = isLoading ? "hidden" : "auto";
     if (isLoading) return setContainerClass(`${styles["container"]}`);
 
     setTimeout(() => {
-      setContainerClass(`${styles["container"]} ${styles["hide"]}`);
+      setIsLoading(false);
     }, 600);
-  }, [isLoading]);
+  }, [isLoading, setIsLoading]);
 
   return (
-    <div className={containerClass}>
-      <div className={`${styles["loader-body"]}`}>
-        <div className={`${styles["loader"]}`}>Loading...</div>
+    isLoading && (
+      <div className={containerClass}>
+        <div className={`${styles["loader-body"]}`}>
+          <div className={`${styles["loader"]}`}>Loading...</div>
+        </div>
       </div>
-    </div>
+    )
   );
 }
 

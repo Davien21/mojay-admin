@@ -24,7 +24,7 @@ export function DataProvider({ children }) {
     if (!token && route !== "/login") router.push("/login");
   });
 
-  const { allData, isLoading, isError, isEmpty } = useData(token);
+  const { mutate, allData, isLoading, isError, isEmpty } = useData(token);
 
   return (
     <dataContext.Provider
@@ -33,6 +33,7 @@ export function DataProvider({ children }) {
         isLoading,
         isError,
         isEmpty,
+        mutate
       }}
     >
       {children}

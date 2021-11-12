@@ -5,7 +5,6 @@ async function getData(token) {
   });
   data = await data.json();
 
-  // console.log(data);
   return data;
 }
 

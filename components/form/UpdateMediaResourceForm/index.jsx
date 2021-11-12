@@ -3,32 +3,56 @@ import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { slugify } from "../../../utils/slugify";
+import { formatSize } from "../../../utils/format-size";
+import { useLoadingContext } from "../../../contexts/loadingContext";
+import { useToastContext } from "../../../contexts/toastContext";
+import { apiErrorMessage } from "../../../utils/handleAPIErrors";
+import { UpdateMediaResource } from "../../../services/mediaService";
+import { useDataContext } from "../../../contexts/dataContext";
 
 function UpdateMediaResourceForm({ media }) {
   const [file, setFile] = useState(null);
+  const [initialValues, setInitialValues] = useState({
+    name: media?.name,
+    file: "",
+  });
+
+  const [allInfo, setAllInfo] = useState({ ...media });
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
 
   const validationSchema = Yup.object({
     name: Yup.string().min(2, "Name is too short").required("Name is required"),
-    file: Yup.mixed().required("Please Add a file"),
+    file: Yup.mixed(),
   });
 
-  const initialValues = {
-    name: "",
-    file: "",
-  };
-
   const handleSubmit = (values, { resetForm }) => {
-    console.log({ values });
-    alert(JSON.stringify(values));
+    (async () => {
+      try {
+        const body = { ...values };
+        if (body.file === "") delete body.file;
+        if (body.file !== "") setFile("");
+        setIsLoading(true);
+        const info = (await UpdateMediaResource(body, allInfo?._id)).data.data;
+        toast.success(`${body.name} was updated successfully`);
+        setIsLoading(false);
+        setAllInfo(info)
+        setInitialValues(values);
+      } catch (error) {
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
-
-  const fileError = formik?.touched["file"] && formik?.errors?.["file"];
 
   return (
     <div className={`${styles["container"]}`}>
@@ -41,17 +65,31 @@ function UpdateMediaResourceForm({ media }) {
             label="Name"
           />
 
-          <div className="mb-4 pb-2">
+          <div className="pb-2">
             <p className="font-weight-semi-bold mb-1">File</p>
+            {!file && media && (
+              <div className="mb-3">
+                <a rel="noreferrer" href={allInfo?.url}>{`${slugify(
+                  allInfo?.name
+                )}.${allInfo?.type}`}</a>
+                <p className="mb-0 mt-1 text-capitalize small-text">
+                  {formatSize(allInfo?.size)}
+                </p>
+              </div>
+            )}
             <label htmlFor="file" className={`${styles["upload-file"]} `}>
               {!file && (
-                <span className="btn light-green-btn">Upload File</span>
-              )}
-              {fileError && (
-                <div className={`${styles["error-message"]} mt-2`}>
-                  Please upload a file
+                <div className="row">
+                  <div className="col px-0 d-flex align-items-center">
+                    <div className="col-auto">
+                      <span className="btn font-weight-semi-bold light-btn stick">
+                        Change File
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )}
+
               {file && (
                 <div className="row">
                   <div className="col px-0 d-flex align-items-center">
@@ -64,7 +102,7 @@ function UpdateMediaResourceForm({ media }) {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          setFile(null);
+                          setFile("");
                           formik.setFieldValue("file", "");
                         }}
                         className="btn light-red-btn"
@@ -93,7 +131,6 @@ function UpdateMediaResourceForm({ media }) {
               type="file"
               onChange={(event) => {
                 const file = event?.currentTarget?.files[0];
-                console.log(file);
                 formik.setFieldValue("file", file);
                 setFile(file);
               }}
@@ -101,30 +138,31 @@ function UpdateMediaResourceForm({ media }) {
           </div>
         </div>
 
-        <hr className="hr-1 my-4" />
-        <div className="container-fluid">
-          <div className="row align-items-center">
-            <div className="col-auto px-0 ">
-              <button
-                type="submit"
-                disabled={!formik.isValid || !formik.dirty}
-                className=" btn blue-btn"
-              >
-                Create Media Resource
-              </button>
-            </div>
-            <div className="col-auto">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  closeForm();
-                  // formik.resetForm()
-                }}
-                className=" btn light-btn"
-              >
-                Cancel
-              </button>
-            </div>
+        <hr className="hr-1 mt-0 mb-4" />
+        <div className="row align-items-center">
+          <div className="col-auto pr-0 ">
+            <button
+              type="submit"
+              disabled={!formik.isValid || !formik.dirty}
+              className=" btn blue-btn"
+            >
+              Save Changes
+            </button>
+          </div>
+          <div className="col-auto">
+            <button
+              onClick={() => {
+                formik.resetForm();
+                setFile("");
+              }}
+              disabled={!formik.dirty}
+              className=" btn light-btn"
+            >
+              {formik.dirty ? "Reset" : "No"} Changes
+            </button>
+          </div>
+          <div className="ml-auto col-auto">
+            <button className="btn light-red-btn">Delete</button>
           </div>
         </div>
       </form>
