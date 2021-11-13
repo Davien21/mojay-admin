@@ -3,7 +3,8 @@
   justify-self: flex-start;
   padding-right: 15px;
   padding-left: 15px;
-  padding-bottom: 80px;
+  /* padding-bottom: 80px; */
+  /* position: relative; */
   /* justify-self: self-start; */
 }
 
@@ -53,12 +54,13 @@
 .main-btns-container {
   border-top: 1px solid #dee2e6;
   padding: 24px 0px;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   z-index: 10;
   background: #fff;
-  width: calc(100% - 40px);
 }
+
+ 
 
 .editor-container {
   position: sticky;

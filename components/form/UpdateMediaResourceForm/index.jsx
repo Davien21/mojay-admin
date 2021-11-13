@@ -8,10 +8,21 @@ import { formatSize } from "../../../utils/format-size";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
 import { apiErrorMessage } from "../../../utils/handleAPIErrors";
-import { UpdateMediaResource } from "../../../services/mediaService";
+import {
+  UpdateMediaResource,
+  DeleteMediaResource,
+} from "../../../services/mediaService";
+import { useRouter } from "next/router";
 import { useDataContext } from "../../../contexts/dataContext";
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+
 function UpdateMediaResourceForm({ media }) {
+  const { mutate } = useDataContext();
+  const router = useRouter();
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
+
   const [file, setFile] = useState(null);
   const [initialValues, setInitialValues] = useState({
     name: media?.name,
@@ -19,8 +30,6 @@ function UpdateMediaResourceForm({ media }) {
   });
 
   const [allInfo, setAllInfo] = useState({ ...media });
-  const { setIsLoading } = useLoadingContext();
-  const { toast } = useToastContext();
 
   const validationSchema = Yup.object({
     name: Yup.string().min(2, "Name is too short").required("Name is required"),
@@ -37,8 +46,27 @@ function UpdateMediaResourceForm({ media }) {
         const info = (await UpdateMediaResource(body, allInfo?._id)).data.data;
         toast.success(`${body.name} was updated successfully`);
         setIsLoading(false);
-        setAllInfo(info)
+        setAllInfo(info);
         setInitialValues(values);
+      } catch (error) {
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
+  };
+
+  const handleDeleteMedia = () => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        (await DeleteMediaResource(allInfo?._id)).data.data;
+        setIsLoading(false);
+        toast.success(`Media Resource was deleted successfully`);
+        setTimeout(() => {
+          toast.close();
+          mutate(`${backendUrl}/all`);
+        }, 3000);
       } catch (error) {
         const message = apiErrorMessage(error);
         toast.error(message);
@@ -162,7 +190,15 @@ function UpdateMediaResourceForm({ media }) {
             </button>
           </div>
           <div className="ml-auto col-auto">
-            <button className="btn light-red-btn">Delete</button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteMedia();
+              }}
+              className="btn light-red-btn"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </form>

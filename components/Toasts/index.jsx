@@ -19,7 +19,7 @@ function Toast() {
     setTimeout(() => {
       if (!isDisplayingToast) return;
       setIsDisplayingToast(false);
-    }, 3500);
+    }, 3000);
   }, [isDisplayingToast, setIsDisplayingToast]);
 
   return (

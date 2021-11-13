@@ -5,7 +5,6 @@ import { deslugify } from "../../utils/deslugify";
 
 function SlideInSection({ title, isShowing, setIsShowing, children }) {
   const containerRef = useRef(null);
-  const [transition, setTransition] = useState("init");
   const route = useRouter().pathname;
   const pageTitle = deslugify(route);
 
@@ -17,11 +16,11 @@ function SlideInSection({ title, isShowing, setIsShowing, children }) {
   };
 
   useEffect(() => {
-    const ref = containerRef.current;
+    const ref = containerRef?.current;
     if (isShowing) {
       ref.style["z-index"] = "var(--overlay-z-index)";
     }
-  }, [isShowing, transition]);
+  }, [isShowing]);
 
   return (
     <div
@@ -30,7 +29,9 @@ function SlideInSection({ title, isShowing, setIsShowing, children }) {
       onTransitionEnd={(e) => {
         if (isShowing) return;
         setTimeout(() => {
-          containerRef.current.style["z-index"] = "-1";
+          if (containerRef.current) {
+            containerRef.current.style["z-index"] = "-1";
+          }
         }, 300);
       }}
       className={containerClass}

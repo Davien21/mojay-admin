@@ -6,13 +6,21 @@ import UpdateMediaResourceForm from "./../../components/form/UpdateMediaResource
 
 function MediaResource() {
   const { allData } = useDataContext();
-  const { id } = useRouter().query;
+  const router = useRouter();
+  const { id } = router.query;
   if (!allData) return <div></div>;
 
   const media = allData?.media.find((media) => media._id === id);
+  if (allData.media.length > 0 && !media) router.push("/media-resources");
+
   return (
     <div>
       <DashboardLayout>
+        {allData.media.length === 0 && (
+          <div className="container-fluid">
+            There are no available Media Resources.
+          </div>
+        )}
         {media && <UpdateMediaResourceForm media={media} />}
       </DashboardLayout>
     </div>

@@ -18,8 +18,19 @@ async function CreateUser(body) {
   return await httpService.post(`${route}`, body);
 }
 
+async function CreateFirstUser(body) {
+  return await httpService.post(`${route}/signup`, body);
+}
+
 async function DeleteUser(id) {
   return await httpService.delete(`${route}/${id}`);
 }
 
-export { login, getCurrentUser, CreateUser, UpdateUser, DeleteUser };
+export {
+  login,
+  getCurrentUser,
+  CreateUser,
+  UpdateUser,
+  DeleteUser,
+  CreateFirstUser,
+};

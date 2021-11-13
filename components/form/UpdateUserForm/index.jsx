@@ -69,7 +69,6 @@ function UpdateUserForm({ user }) {
         setAllInfo(info);
         setInitialValues(values);
       } catch (error) {
-        console.log(error);
         const message = apiErrorMessage(error);
         toast.error(message);
         setIsLoading(false);
@@ -77,7 +76,7 @@ function UpdateUserForm({ user }) {
     })();
   };
 
-  const deleteUser = () => {
+  const handleDeleteUser = () => {
     (async () => {
       try {
         setIsLoading(true);
@@ -87,10 +86,8 @@ function UpdateUserForm({ user }) {
         setTimeout(() => {
           toast.close();
           mutate(`${backendUrl}/all`);
-          router.push("/users");
-        }, 3500);
+        }, 3000);
       } catch (error) {
-        console.log(error);
         const message = apiErrorMessage(error);
         toast.error(message);
         setIsLoading(false);
@@ -154,7 +151,7 @@ function UpdateUserForm({ user }) {
           <div
             onClick={(e) => {
               e.preventDefault();
-              deleteUser();
+              handleDeleteUser();
             }}
             className="ml-auto col-auto"
           >

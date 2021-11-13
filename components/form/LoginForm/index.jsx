@@ -29,25 +29,20 @@ function LoginForm(props) {
         setIsLoading(true);
         const user = { ...values };
         const token = (await login(user)).data.data;
-        console.log(token);
         localStorage.setItem("token", token);
         setIsLoading(false);
         toast.success(`Login was successful`);
         setTimeout(() => {
+          toast.close();
           router.push("/");
-        }, 2000);
+        }, 3000);
       } catch (error) {
-        console.log(error);
         const message = apiErrorMessage(error);
         toast.error(message);
         setIsLoading(false);
       }
     })();
   };
-
-  // useEffect(() => {
-
-  // }, [isLoggedIn])
 
   const formik = useFormik({
     initialValues,

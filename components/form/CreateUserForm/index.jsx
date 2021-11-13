@@ -43,7 +43,6 @@ function CreateUserForm({ closeForm }) {
         toast.success(`${values.name} was created successfully`);
         mutate(`${backendUrl}/all`)
       } catch (error) {
-        console.log(error);
         const message = apiErrorMessage(error);
         toast.error(message);
         setIsLoading(false);

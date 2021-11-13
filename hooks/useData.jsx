@@ -19,19 +19,20 @@ function useData(token) {
       data = await data.data;
       return data;
     } catch (error) {
-      if (router.pathname === "/login") return;
+      if (router.route === "/login" || router.route === "/signup") return;
       const message = apiErrorMessage(error);
       toast.error(message);
       setTimeout(() => {
-        if (error.response.status === 401) router.push("/login");
+        // if (error.response.status === 401) router.push("/login");
       }, 4500);
     }
   };
 
-  const { data: allData, error, mutate } = useSWR(
-    token ? `${backendUrl}/all` : null,
-    fetcher
-  );
+  const {
+    data: allData,
+    error,
+    mutate,
+  } = useSWR(token ? `${backendUrl}/all` : null, fetcher);
 
   useEffect(() => {
     if (allData) setData(allData);
@@ -42,7 +43,7 @@ function useData(token) {
     isLoading: !error && !data,
     isEmpty: !data?.data,
     isError: error,
-    mutate
+    mutate,
   };
 }
 

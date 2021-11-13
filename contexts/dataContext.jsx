@@ -21,6 +21,7 @@ export function DataProvider({ children }) {
 
   useEffect(() => {
     if (!isInitiallyFetched) return;
+    if (route === "/signup") return;
     if (!token && route !== "/login") router.push("/login");
   });
 
@@ -33,7 +34,7 @@ export function DataProvider({ children }) {
         isLoading,
         isError,
         isEmpty,
-        mutate
+        mutate,
       }}
     >
       {children}

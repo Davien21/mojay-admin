@@ -4,7 +4,7 @@ const route = `/media`;
 
 async function UpdateMediaResource(body, id) {
   let bodyFormData = new FormData();
-  
+
   for (let eachKey in body) bodyFormData.append(eachKey, body[eachKey]);
   return await httpService.put(`${route}/${id}`, bodyFormData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -20,4 +20,8 @@ async function CreateMediaResource(body) {
   });
 }
 
-export { UpdateMediaResource, CreateMediaResource };
+async function DeleteMediaResource(id) {
+  return await httpService.delete(`${route}/${id}`);
+}
+
+export { UpdateMediaResource, CreateMediaResource, DeleteMediaResource };

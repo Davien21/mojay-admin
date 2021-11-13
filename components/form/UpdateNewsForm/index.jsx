@@ -2,21 +2,30 @@ import styles from "./update-news-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 
-import Image from "next/image";
+// import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
-import { UpdateNewsItem } from "../../../services/newsService";
+import { UpdateNewsItem, DeleteNews } from "../../../services/newsService";
 import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
+import { useDataContext } from "../../../contexts/dataContext";
+import { useRouter } from "next/router";
+
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 const statuses = ["Published", "Draft"];
 
 function UpdateNewsForm({ news }) {
+  const { mutate } = useDataContext();
+  const router = useRouter();
+  const { setIsLoading } = useLoadingContext();
+  const { toast } = useToastContext();
+
   const validationSchema = Yup.object({
     title: Yup.string()
       .min(2, "Title is too short")
@@ -44,9 +53,6 @@ function UpdateNewsForm({ news }) {
   const [allInfo, setAllInfo] = useState({ ...news });
   const [image, setImage] = useState("");
 
-  const { setIsLoading } = useLoadingContext();
-  const { toast } = useToastContext();
-  
   const handleSubmit = (values, { resetForm }) => {
     (async () => {
       try {
@@ -60,7 +66,25 @@ function UpdateNewsForm({ news }) {
         setAllInfo(info);
         setInitialValues(values);
       } catch (error) {
-        console.log(error);
+        const message = apiErrorMessage(error);
+        toast.error(message);
+        setIsLoading(false);
+      }
+    })();
+  };
+
+  const handleDeleteNews = () => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        (await DeleteNews(allInfo?._id)).data.data;
+        setIsLoading(false);
+        toast.success(`News Update was deleted successfully`);
+        setTimeout(() => {
+          toast.close();
+          mutate(`${backendUrl}/all`);
+        }, 3000);
+      } catch (error) {
         const message = apiErrorMessage(error);
         toast.error(message);
         setIsLoading(false);
@@ -219,7 +243,15 @@ function UpdateNewsForm({ news }) {
               </button>
             </div>
             <div className="ml-auto col-auto">
-              <button className="btn light-red-btn">Delete</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDeleteNews();
+                }}
+                className="btn light-red-btn"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

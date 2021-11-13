@@ -7,10 +7,14 @@ import { CreateMediaResource } from "../../../services/mediaService";
 import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
+import { useDataContext } from "../../../contexts/dataContext";
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 function CreateMediaResourceForm({ closeForm }) {
+  const { mutate } = useDataContext();
   const { setIsLoading } = useLoadingContext();
   const { toast } = useToastContext();
+
   const [file, setFile] = useState(null);
 
   const validationSchema = Yup.object({
@@ -29,9 +33,10 @@ function CreateMediaResourceForm({ closeForm }) {
         setIsLoading(true);
         await CreateMediaResource(values);
         setIsLoading(false);
-        closeForm()
+        closeForm();
         toast.success(`${values.name} was uploaded successfully`);
         resetForm();
+        mutate(`${backendUrl}/all`);
       } catch (error) {
         const message = apiErrorMessage(error);
         toast.error(message);
@@ -111,7 +116,6 @@ function CreateMediaResourceForm({ closeForm }) {
               type="file"
               onChange={(event) => {
                 const file = event?.currentTarget?.files[0];
-                console.log(file);
                 formik.setFieldValue("file", file);
                 setFile(file);
               }}

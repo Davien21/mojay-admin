@@ -3,8 +3,6 @@ import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState, useEffect } from "react";
-import { useDataContext } from "../../../contexts/dataContext";
-import { useRouter } from "next/router";
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 import { getToday } from "../../../utils/dateFormatter";
@@ -13,10 +11,14 @@ import SegmentedControl from "../../segmentedControl";
 import { CreateNewsItem } from "../../../services/newsService";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
+import { useDataContext } from "../../../contexts/dataContext";
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 
 const statuses = ["Published", "Draft"];
 
 function CreateNewsForm({ closeForm }) {
+  const { mutate } = useDataContext();
   const { setIsLoading } = useLoadingContext();
   const { toast } = useToastContext();
   const [image, setImage] = useState(null);
@@ -57,6 +59,7 @@ function CreateNewsForm({ closeForm }) {
         await CreateNewsItem(values);
         setIsLoading(false);
         toast.success(`${values.title} was uploaded successfully`);
+        mutate(`${backendUrl}/all`);
       } catch (error) {
         const message = apiErrorMessage(error);
         toast.error(message);

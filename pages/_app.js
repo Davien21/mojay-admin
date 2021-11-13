@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps, router }) {
   // useEffect(() => {
   //   setData({ ...pageProps });
   // });
-
+  const freeRoutes = ["/signup", "/login"];
   const route = router.route;
 
   return (
@@ -36,14 +36,14 @@ function MyApp({ Component, pageProps, router }) {
           <AnimatePresence exitBeforeEnter>
             <LoadingProvider>
               <ToastProvider>
-                {route === "/login" && (
+                {freeRoutes[route] && (
                   <>
                     <Loader />
                     <Toast />
                     <Component {...pageProps} key={router.route} />
                   </>
                 )}
-                {route !== "/login" && (
+                {!freeRoutes[route] && (
                   <DataProvider>
                     <Loader />
                     <Toast />

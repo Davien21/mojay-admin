@@ -19,4 +19,8 @@ async function CreateNewsItem(body) {
   });
 }
 
-export { UpdateNewsItem, CreateNewsItem };
+async function DeleteNews(id) {
+  return await httpService.delete(`${route}/${id}`);
+}
+
+export { UpdateNewsItem, CreateNewsItem, DeleteNews };
