@@ -17,4 +17,5 @@ module.exports = {
       "herokuapp.com",
     ],
   },
+  basePath: '/admin'
 };
