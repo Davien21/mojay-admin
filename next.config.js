@@ -15,7 +15,6 @@ module.exports = {
       "res.cloudinary.com",
       "localhost",
       "herokuapp.com",
-      "blob:http://localhost",
     ],
   },
 };
