@@ -14,7 +14,7 @@ function HoveringLogo() {
           repeatType: "reverse",
         },
       }}
-      style={{ marginTop: "-10%" }}
+      style={{ marginTop: "-13%" }}
     >
       <MojayFavicon width={77} height={84} />
     </motion.div>

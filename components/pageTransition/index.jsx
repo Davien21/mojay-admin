@@ -6,7 +6,7 @@ const style = {
   position: "fixed",
   width: "100vw",
   height: "100vh",
-  zIndex: "10000",
+  zIndex: "var(--loader-z-index)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

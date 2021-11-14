@@ -7,7 +7,7 @@ import { useState } from "react";
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 
-// import Image from "next/image";
+import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
@@ -15,6 +15,7 @@ import { UpdateNewsItem, DeleteNews } from "../../../services/newsService";
 import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 import { useDataContext } from "../../../contexts/dataContext";
 import { useRouter } from "next/router";
+import { getBlurPath } from "../../../utils/img-blur-path";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
@@ -119,11 +120,13 @@ function UpdateNewsForm({ news }) {
             <label htmlFor="image" className={`${styles["upload-image"]} `}>
               <div className="d-flex flex-wrap">
                 <div className="col-auto px-0">
-                  <img
+                  <Image
                     width={150}
                     height={150}
                     src={image || news?.url}
                     alt={formik?.values["altText"]}
+                    placeholder="blur"
+                    blurDataURL={getBlurPath(news?.url)}
                   />
                 </div>
                 <div className="col px-0 d-flex align-items-center">
@@ -242,7 +245,7 @@ function UpdateNewsForm({ news }) {
                 {formik.dirty ? "Reset" : "No"} Changes
               </button>
             </div>
-            <div className="ml-auto col-auto">
+            <div className="ml-md-auto col col-md-auto mt-3">
               <button
                 onClick={(e) => {
                   e.preventDefault();

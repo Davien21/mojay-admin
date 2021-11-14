@@ -26,7 +26,7 @@ export default function NewsPage() {
           <span className={`${styles["table-title"]}`}>Name</span>
           <hr className="w-100 hr-2" />
           {allData?.news.length > 0 && (
-            <ol className={`px-3 ${styles["user-list"]}`}>
+            <ol className={`px-3 ${styles["table-list"]}`}>
               {allData?.news.map((news) => (
                 <li key={news._id}>
                   <Link href={`/news/${news._id}`}>

@@ -1,2 +1,11 @@
 .container {
 }
+
+.table-list {
+  font-size: 0.95rem;
+  max-width: 700px;
+}
+
+.table-list li {
+  margin-bottom: 10px;
+}

@@ -10,7 +10,7 @@ export default function IndexPage() {
     <DashboardLayout>
       <div className={`${styles["container"]} container-fluid`}>
         <div className={`row ${styles["cards-container"]}`}>
-          <div className={`col-auto pl-3 mb-3 pr-md-0 pb-md-0`}>
+          <div className={`col-12 col-md-auto pl-3 mb-3 pr-md-0 pb-md-0`}>
             <Link href="/users">
               <a className={`${styles["card"]}`}>
                 <h3 className={`${styles["heading"]}`}>Users</h3>
@@ -25,7 +25,7 @@ export default function IndexPage() {
               </a>
             </Link>
           </div>
-          <div className={`col-auto pl-3 mb-3 pr-md-0 pb-md-0`}>
+          <div className={`col-12 col-md-auto pl-3 mb-3 pr-md-0 pb-md-0`}>
             <Link href="/news">
               <a className={`${styles["card"]}`}>
                 <h3 className={`${styles["heading"]}`}>News Updates</h3>
@@ -40,7 +40,7 @@ export default function IndexPage() {
               </a>
             </Link>
           </div>
-          <div className={`col-auto pl-3 mb-3`}>
+          <div className={`col-12 col-md-auto pl-3 mb-3`}>
             <Link href="/media-resources">
               <a className={`${styles["card"]}`}>
                 <h3 className={`${styles["heading"]}`}>Media Resources</h3>

@@ -1,17 +1,17 @@
 .container {
 }
 
-.user-list li {
-  margin-bottom: 0.5rem;
+.table-list {
   font-size: 0.95rem;
-}
-
-.user-list li:hover {
-  /* color: var(--app-blue); */
+  max-width: 700px;
 }
 
 .table-title {
   font-size: 0.95rem;
   color: #6b7290;
   font-weight: 500;
+}
+
+.table-list li {
+  margin-bottom: 10px;
 }

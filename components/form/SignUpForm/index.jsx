@@ -37,7 +37,6 @@ function SignUpForm(props) {
         setIsLoading(false);
         toast.success(`Signup was successful`);
         setTimeout(() => {
-          toast.close();
           router.push("/");
         }, 3000);
       } catch (error) {

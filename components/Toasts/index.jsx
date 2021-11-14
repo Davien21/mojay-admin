@@ -4,8 +4,13 @@ import { ErrorIcon, GoodTickIcon, WhiteCloseIcon } from "../../assets";
 import { useEffect } from "react";
 
 function Toast() {
-  const { toastType, toastMessage, isDisplayingToast, setIsDisplayingToast } =
-    useToastContext();
+  const {
+    toastType,
+    toastMessage,
+    isDisplayingToast,
+    setIsDisplayingToast,
+    toastTime,
+  } = useToastContext();
 
   const containerClass = (() => {
     if (!isDisplayingToast)
@@ -19,8 +24,8 @@ function Toast() {
     setTimeout(() => {
       if (!isDisplayingToast) return;
       setIsDisplayingToast(false);
-    }, 3000);
-  }, [isDisplayingToast, setIsDisplayingToast]);
+    }, toastTime);
+  }, [isDisplayingToast, setIsDisplayingToast, toastTime]);
 
   return (
     <div className={containerClass}>

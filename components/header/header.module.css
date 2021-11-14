@@ -10,16 +10,20 @@
 }
 
 .container .logo {
-  /* padding: 0px 24px; */
   width: var(--sidebar-width);
 }
 
 .container .page-title {
-  padding: 0px 0.5rem 0px 3rem;
   margin-bottom: 0;
   font-weight: 700;
   font-size: 1.25rem;
   display: flex;
+}
+
+@media screen and (min-width: 768px) {
+  .container .page-title {
+    padding: 0px 0.5rem 0px 3rem !important;
+  }
 }
 
 .container .page-title a {
@@ -28,4 +32,8 @@
 
 .container .page-title a:hover {
   color: var(--app-blue);
+}
+
+.menu-btn {
+  cursor: pointer;
 }

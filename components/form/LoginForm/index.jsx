@@ -33,7 +33,6 @@ function LoginForm(props) {
         setIsLoading(false);
         toast.success(`Login was successful`);
         setTimeout(() => {
-          toast.close();
           router.push("/");
         }, 3000);
       } catch (error) {
@@ -61,7 +60,11 @@ function LoginForm(props) {
           label="Password"
           className={`mb-4 pb-2`}
         />
-        <button disabled={!formik.isValid} className="btn w-100 red-btn">
+        <button
+          type="submit"
+          disabled={!formik.isValid}
+          className="btn w-100 red-btn"
+        >
           Login
         </button>
       </form>

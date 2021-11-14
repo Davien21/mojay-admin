@@ -26,7 +26,7 @@ export default function MediaResourcesPage() {
           <hr className="w-100 hr-2" />
            
           {allData?.media.length > 0 && (
-            <ol className={`px-3 ${styles["user-list"]}`}>
+            <ol className={`px-3 ${styles["table-list"]}`}>
               {allData?.media.map((media) => (
                 <li key={media._id}>
                   <Link href={`/media-resources/${media._id}`}>

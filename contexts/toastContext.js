@@ -6,19 +6,24 @@ export function ToastProvider({ children }) {
   const [isDisplayingToast, setIsDisplayingToast] = useState(false);
   const [toastType, setToastType] = useState("success");
   const [toastMessage, setToastMessage] = useState("Hello");
+  const [toastTime, setToastTime] = useState(3000);
 
   const toast = {
-    error: (message) => {
+    error: (message, time) => {
       setIsDisplayingToast(true);
       setToastType("error");
       setToastMessage(message);
+      setToastTime(time || 3000)
     },
-    success: (message) => {
+    success: (message, time) => {
       setIsDisplayingToast(true);
       setToastType("success");
       setToastMessage(message);
+      setToastTime(time || 3000)
     },
-    close: () => setIsDisplayingToast(false),
+    close: (time) => {
+      setIsDisplayingToast(false);
+    },
   };
 
   return (
@@ -31,6 +36,8 @@ export function ToastProvider({ children }) {
         setToastMessage,
         isDisplayingToast,
         setIsDisplayingToast,
+        toastTime,
+        setToastTime,
       }}
     >
       {children}

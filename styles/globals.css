@@ -2,6 +2,7 @@
 
 html {
   --primary-color: #d43742;
+  --secondary-black: #374151;
   --secondary-red: #dc2626;
   --secondary-color: #eff3f6;
   --primary-green: #11b84e;
@@ -72,6 +73,10 @@ body#tinymce {
 
 a:hover {
   color: var(--app-blue);
+}
+
+a.list-link {
+  display: block;
 }
 
 a.list-link:hover {

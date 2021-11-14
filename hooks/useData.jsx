@@ -23,7 +23,7 @@ function useData(token) {
       const message = apiErrorMessage(error);
       toast.error(message);
       setTimeout(() => {
-        // if (error.response.status === 401) router.push("/login");
+        if (error.response.status === 401) router.push("/login");
       }, 4500);
     }
   };
@@ -36,6 +36,7 @@ function useData(token) {
 
   useEffect(() => {
     if (allData) setData(allData);
+    console.log(allData);
   }, [allData]);
 
   return {

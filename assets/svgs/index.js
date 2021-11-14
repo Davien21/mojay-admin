@@ -7,6 +7,7 @@ import RightArrowSvg from "./right-arrow.svg";
 import WhiteCloseIcon from "./whiteCloseButton.svg";
 import GoodTickIcon from "./good-tick.svg";
 import ErrorIcon from "./error.svg";
+import MenuIcon from "./menu.svg";
 
 export {
   MojayFavicon,
@@ -18,4 +19,5 @@ export {
   WhiteCloseIcon,
   GoodTickIcon,
   ErrorIcon,
+  MenuIcon,
 };

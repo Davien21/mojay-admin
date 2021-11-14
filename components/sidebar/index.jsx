@@ -28,7 +28,7 @@ function Sidebar() {
       <div>
         <div className={`d-flex flex-wrap w-100 ${styles["details"]}`}>
           <div className="col pl-4 pr-0 small-text d-flex align-items-center">
-            <span className="font-weight-light">Signed in as</span>
+            <span className="font-weight-light col-4 px-0 no-word-wrap">Signed in as</span>
             <span className={`font-weight-bold px-1`}>
               {allData?.currentUser?.name}
             </span>

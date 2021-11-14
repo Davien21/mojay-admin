@@ -16,6 +16,8 @@ import {
 import { ToastProvider } from "./../contexts/toastContext";
 import { Loader } from "../components/Loader";
 import { Toast } from "../components/Toasts";
+import Head from "next/head";
+import { deslugify } from "./../utils/deslugify";
 
 function MyApp({ Component, pageProps, router }) {
   const { routeChanging } = useRouteChangeHandler();
@@ -26,30 +28,40 @@ function MyApp({ Component, pageProps, router }) {
   // });
   const freeRoutes = ["/signup", "/login"];
   const route = router.route;
+  const title = deslugify(route);
 
   return (
     <>
       {routeChanging ? (
-        <PageTransition />
+        <>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+            <meta name="description" content="The Mojay Admin Dashboard." />
+            <title>Loading...</title>
+          </Head>
+          <PageTransition />
+        </>
       ) : (
         <>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+            <meta name="description" content="The Mojay Admin Dashboard." />
+            <title>Mojay Admin | {title}</title>
+          </Head>
           <AnimatePresence exitBeforeEnter>
             <LoadingProvider>
               <ToastProvider>
-                {freeRoutes[route] && (
-                  <>
-                    <Loader />
-                    <Toast />
-                    <Component {...pageProps} key={router.route} />
-                  </>
-                )}
-                {!freeRoutes[route] && (
-                  <DataProvider>
-                    <Loader />
-                    <Toast />
-                    <Component {...pageProps} key={router.route} />
-                  </DataProvider>
-                )}
+                <DataProvider>
+                  <Loader />
+                  <Toast />
+                  <Component {...pageProps} key={router.route} />
+                </DataProvider>
               </ToastProvider>
             </LoadingProvider>
           </AnimatePresence>

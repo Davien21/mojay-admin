@@ -22,7 +22,10 @@ const closedPath = (() => {
 function EyeIcon({ isOpen }) {
   return (
     <div className={`${styles["container"]}`}>
-      <button className={`${styles["toggle-password"]} form-control`}>
+      <button
+        type="button"
+        className={`${styles["toggle-password"]} form-control`}
+      >
         <svg
           aria-hidden="true"
           focusable="false"

@@ -1,10 +1,22 @@
 .container {
   width: var(--sidebar-width);
-  position: sticky;
+  position: absolute;
   top: 80px;
+  left: -300px;
   height: calc(100vh - 80px);
   z-index: var(--header-z-index);
   background-color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: var(--sidebar-width);
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    z-index: var(--header-z-index);
+    background-color: #fff;
+  }
 }
 
 .container > div {
@@ -15,6 +27,7 @@
   margin-top: 30px;
   margin-bottom: 30px;
   width: 100%;
+  place-items: center;
 }
 
 .power-btn {
@@ -53,4 +66,98 @@
 .container ul li:not(.active) a:hover {
   /* color: var(--primary-color); */
   background-color: #eff6ff;
+}
+
+@media screen and (max-width: 303px) {
+  .side-nav {
+    width: 250px;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.side-nav {
+  height: 100vh;
+  overflow: hidden auto;
+  width: 300px;
+  box-shadow: 0px 4px 16px rgb(0 0 0 / 20%);
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  z-index: var(--header-z-index);
+}
+
+.side-nav ul {
+  /* display: none; */
+  /* padding: 25px; */
+  padding-right: 0px;
+  padding-bottom: 0px;
+  width: 300px;
+  overflow: hidden;
+}
+
+.side-nav ul li {
+  list-style: none;
+  cursor: pointer;
+  border-bottom: 1px solid #cbcbcb;
+  /* margin-left: -25px; */
+  /* margin-right: -25px; */
+}
+
+.side-nav ul li a {
+  font-size: 1rem;
+  /* display: block; */
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.menu_toggle,
+.menu_toggle:focus {
+  outline: none;
+  border: none;
+  user-select: none;
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  right: 1.5rem;
+  top: 1.7rem;
+  padding: 0.5rem;
+}
+
+.logo {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 576px) {
+  .menu_toggle {
+    top: 2.7rem;
+  }
+}
+
+.side-nav .header {
+  padding: 11px 0px;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.close-btn {
+  position: absolute;
+  right: 30px;
+  cursor: pointer;
+  transition: scale 0.1s ease-in-out;
+  stroke: var(--secondary-black);
+}
+
+.close-btn path {
+  stroke: var(--secondary-black);
+}
+
+.close-btn:hover {
+  transform: scale(1.2, 1.2);
 }

@@ -47,11 +47,6 @@ function CreateNewsForm({ closeForm }) {
     status: "Draft",
   };
 
-  // const { users } = useDataContext();
-  // const { id } = useRouter().query;
-  // const user = users?.[id];
-  // Object.assign(initialValues, user);
-
   const handleSubmit = (values, { resetForm }) => {
     (async () => {
       try {
@@ -105,7 +100,7 @@ function CreateNewsForm({ closeForm }) {
               {image && (
                 <div className="d-flex flex-wrap">
                   <div className="col-auto px-0">
-                    <img width={150} height={150} src={image} alt="" />
+                    <Image width={150} height={150} src={image} alt="" />
                   </div>
                   <div className="col px-0 d-flex align-items-center">
                     <div className="col-auto">
@@ -144,7 +139,6 @@ function CreateNewsForm({ closeForm }) {
                 formik.setFieldValue("image", file);
                 if (file) {
                   const url = URL.createObjectURL(file);
-                  // console.log(file)
                   setImage(url);
                 }
               }}
@@ -187,8 +181,6 @@ function CreateNewsForm({ closeForm }) {
                 height: 600,
                 menubar: false,
                 content_style: "body { font-family: Poppins; }",
-                // font_formats:
-                //   "Poppins Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
                 plugins: [
                   "advlist autolink lists link image",
                   "charmap print preview anchor help",
@@ -231,8 +223,6 @@ function CreateNewsForm({ closeForm }) {
                 onClick={(e) => {
                   e.preventDefault();
                   closeForm();
-                  // console.log(formik);
-                  // formik.resetForm()
                 }}
                 className=" btn light-btn"
               >

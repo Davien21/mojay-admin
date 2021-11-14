@@ -25,7 +25,7 @@ export default function UsersPage() {
           <span className={`${styles["table-title"]}`}>Name</span>
           <hr className="w-100 hr-2" />
           {allData?.users.length > 0 && (
-            <ol className={`px-3 ${styles["user-list"]}`}>
+            <ol className={`px-3 ${styles["table-list"]}`}>
               {allData?.users.map((user) => (
                 <li key={user._id}>
                   <Link href={`/users/${user._id}`}>

@@ -2,7 +2,7 @@
   position: fixed;
   width: 100%;
   top: -300px;
-  border-radius: 10px 10px 0px 0px;
+  /* border-radius: 10px 10px 0px 0px; */
   perspective: 100px;
   perspective-origin: left;
   left: calc(0px);
