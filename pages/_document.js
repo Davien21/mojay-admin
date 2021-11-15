@@ -10,6 +10,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head />
+        <link rel="icon" href="./admin/favicon.ico" />
         <body className="body-container">
           <Main />
           <NextScript />

@@ -20,8 +20,8 @@ export function DataProvider({ children }) {
   }, [isInitiallyFetched]);
 
   useEffect(() => {
-    if (!isInitiallyFetched) return;
     if (route === "/signup") return;
+    if (!isInitiallyFetched) return;
     if (!token && route !== "/login") router.push("/login");
   });
 
