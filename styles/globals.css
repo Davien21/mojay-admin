@@ -139,10 +139,11 @@ ul {
   padding: 6px 10px;
   color: #6b7280;
   background-color: transparent;
+  background-color: #eff3f6;
 }
 
-.light-btn.stick {
-  background-color: #eff3f6;
+.light-btn:disabled {
+  background-color: transparent;
 }
 
 .light-btn:hover {

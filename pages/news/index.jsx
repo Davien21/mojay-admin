@@ -49,20 +49,4 @@ export default function NewsPage() {
     </DashboardLayout>
   );
 }
-
-export const getServerSideProps = async function ({ req, res }) {
-  const user = { name: "Chidiebere Ekennia" };
-
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { user },
-  };
-};
+ 

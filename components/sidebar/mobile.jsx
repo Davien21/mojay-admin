@@ -61,24 +61,26 @@ function MobileMenu({ isOpen, onCloseSideBar }) {
           onClick={() => onCloseSideBar(false)}
         />
       </div>
-      <div className={`d-flex w-100 ${styles["details"]} container-fluid`}>
-        <div className="row small-text align-items-center">
-          <span className="font-weight-light col-4 no-word-wrap">
+      <div className={`d-flex flex-wrap w-100 ${styles["details"]}`}>
+        <div className="col pl-4 pr-0 small-text d-flex flex-wrap align-items-center">
+          <span className="font-weight-light col-auto pl-0 pr-2 no-word-wrap">
             Signed in as
           </span>
-          <span className={`font-weight-bold col`}>
+          <span className={`font-weight-bold col-auto px-0`}>
             {allData?.currentUser?.name}
           </span>
         </div>
-        <Link href="/login" passHref replace>
-          <button
-            onClick={logout}
-            className={`${styles["power-btn"]} btn ml-auto`}
-            title="Log out"
-          >
-            <PowerButtonSvg />
-          </button>
-        </Link>
+        <div className="col-auto">
+          <Link href="/login" passHref replace>
+            <button
+              onClick={logout}
+              className={`${styles["power-btn"]} btn ml-auto`}
+              title="Log out"
+            >
+              <PowerButtonSvg />
+            </button>
+          </Link>
+        </div>
       </div>
       <ul className="w-100">
         <li className={linkClass("/")}>

@@ -6,6 +6,7 @@ import DashboardLayout from "./../../layouts/dashboard/index";
 
 function NewsItem() {
   const { allData } = useDataContext();
+  const dataIsReady = allData?.users.length > 0;
   const router = useRouter();
   const { id } = router.query;
   if (!allData) return <div></div>;
@@ -16,7 +17,7 @@ function NewsItem() {
   return (
     <div>
       <DashboardLayout>
-        {allData.news.length === 0 && (
+        {dataIsReady && allData.news.length === 0 && (
           <div className="container-fluid">
             There are no available news updates.
           </div>

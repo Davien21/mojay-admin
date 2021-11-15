@@ -2,7 +2,7 @@ import styles from "./create-media-resource-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { CreateMediaResource } from "../../../services/mediaService";
 import { apiErrorMessage } from "./../../../utils/handleAPIErrors";
 import { useLoadingContext } from "../../../contexts/loadingContext";
@@ -15,6 +15,7 @@ function CreateMediaResourceForm({ closeForm }) {
   const { setIsLoading } = useLoadingContext();
   const { toast } = useToastContext();
 
+  const fileInputRef = useRef(null);
   const [file, setFile] = useState(null);
 
   const validationSchema = Yup.object({
@@ -68,7 +69,15 @@ function CreateMediaResourceForm({ closeForm }) {
             <p className="font-weight-semi-bold mb-1">File</p>
             <label htmlFor="file" className={`${styles["upload-file"]} `}>
               {!file && (
-                <span className="btn light-green-btn">Upload File</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    fileInputRef?.current?.click();
+                  }}
+                  className="btn light-green-btn"
+                >
+                  Upload File
+                </button>
               )}
               {fileError && (
                 <div className={`${styles["error-message"]} mt-2`}>
@@ -110,6 +119,7 @@ function CreateMediaResourceForm({ closeForm }) {
               )}
             </label>
             <Input
+              ref={fileInputRef}
               id="file"
               className="d-none"
               name="file"

@@ -2,12 +2,11 @@ import styles from "./update-news-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 
-import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
 import { useLoadingContext } from "../../../contexts/loadingContext";
 import { useToastContext } from "../../../contexts/toastContext";
@@ -26,6 +25,8 @@ function UpdateNewsForm({ news }) {
   const router = useRouter();
   const { setIsLoading } = useLoadingContext();
   const { toast } = useToastContext();
+
+  const fileInputRef = useRef(null);
 
   const validationSchema = Yup.object({
     title: Yup.string()
@@ -117,34 +118,42 @@ function UpdateNewsForm({ news }) {
 
           <div className="mb-4 pb-2">
             <p className="font-weight-semi-bold mb-1">Photo</p>
-            <label htmlFor="image" className={`${styles["upload-image"]} `}>
-              <div className="d-flex flex-wrap">
-                <div className="col-auto px-0">
-                  <Image
+            <div className="row">
+              <label
+                htmlFor="image"
+                className={`${styles["upload-image"]} col-auto`}
+              >
+                <div className="">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     width={150}
                     height={150}
                     src={image || news?.url}
                     alt={formik?.values["altText"]}
-                    placeholder="blur"
-                    blurDataURL={getBlurPath(news?.url)}
+                    // placeholder="blur"
+                    // blurDataURL={getBlurPath(news?.url)}
                   />
                 </div>
-                <div className="col px-0 d-flex align-items-center">
-                  <div className="col-auto">
-                    <span
-                      onClick={(e) => {
-                        setImage(null);
-                        formik.setFieldValue("image", "");
-                      }}
-                      className="btn light-btn stick font-weight-semi-bold"
-                    >
-                      Change Image
-                    </span>
-                  </div>
+              </label>
+              <div className="row align-items-center">
+                <div className="col-auto">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      fileInputRef?.current?.click();
+
+                      // setImage(null);
+                      // formik.setFieldValue("image", "");
+                    }}
+                    className="btn light-btn stick font-weight-semi-bold"
+                  >
+                    Change Image
+                  </button>
                 </div>
               </div>
-            </label>
+            </div>
             <Input
+              ref={fileInputRef}
               id="image"
               className="d-none"
               name="image"
@@ -154,7 +163,6 @@ function UpdateNewsForm({ news }) {
                 formik.setFieldValue("image", file);
                 if (file) {
                   const url = URL.createObjectURL(file);
-                  // console.log(file)
                   setImage(url);
                 }
               }}
@@ -208,7 +216,6 @@ function UpdateNewsForm({ news }) {
             bullist numlist outdent indent | help",
               }}
               onEditorChange={(e) => {
-                // console.log(e);
                 formik.setFieldValue("content", e);
               }}
             />
@@ -224,34 +231,35 @@ function UpdateNewsForm({ news }) {
 
         <div className={`${styles["main-btns-container"]}`}>
           <div className="row align-items-center">
-            <div className="col-auto pr-0 ">
+            <div className="col-6 col-sm-auto pr-0 ">
               <button
                 type="submit"
-                disabled={!formik.isValid}
-                className=" btn blue-btn"
+                disabled={!formik.isValid || !formik.dirty}
+                className="w-100 btn blue-btn"
               >
                 Save Changes
               </button>
             </div>
-            <div className="col-auto">
+            <div className="col-6 col-sm-auto">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   formik.resetForm();
+                  setImage(news?.url);
                 }}
-                disabled={!formik.isValid}
-                className=" btn light-btn"
+                disabled={!formik.isValid || !formik.dirty}
+                className="w-100 btn light-btn"
               >
                 {formik.dirty ? "Reset" : "No"} Changes
               </button>
             </div>
-            <div className="ml-md-auto col col-md-auto mt-3">
+            <div className="ml-sm-auto col col-sm-auto mt-3 mt-sm-0">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   handleDeleteNews();
                 }}
-                className="btn light-red-btn"
+                className="w-100 btn light-red-btn"
               >
                 Delete
               </button>

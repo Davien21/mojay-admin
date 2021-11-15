@@ -2,11 +2,10 @@ import styles from "./create-news-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { TextArea } from "../../textArea";
 import { Editor } from "@tinymce/tinymce-react";
 import { getToday } from "../../../utils/dateFormatter";
-import Image from "next/image";
 import SegmentedControl from "../../segmentedControl";
 import { CreateNewsItem } from "../../../services/newsService";
 import { useLoadingContext } from "../../../contexts/loadingContext";
@@ -21,6 +20,8 @@ function CreateNewsForm({ closeForm }) {
   const { mutate } = useDataContext();
   const { setIsLoading } = useLoadingContext();
   const { toast } = useToastContext();
+  
+  const fileInputRef = useRef(null);
   const [image, setImage] = useState(null);
 
   const validationSchema = Yup.object({
@@ -88,9 +89,15 @@ function CreateNewsForm({ closeForm }) {
             <p className="font-weight-semi-bold mb-1">Photo</p>
             <label htmlFor="image" className={`${styles["upload-image"]} `}>
               {!image && (
-                <span className="font-weight-semi-bold btn light-btn stick">
+                <button
+                  type="button"
+                  onClick={() => {
+                    fileInputRef?.current?.click();
+                  }}
+                  className="font-weight-semi-bold btn light-btn stick"
+                >
                   Create related News Image
-                </span>
+                </button>
               )}
               {!image && formik.submitCount > 0 && (
                 <div className={`${styles["error-message"]} mt-2`}>
@@ -100,7 +107,8 @@ function CreateNewsForm({ closeForm }) {
               {image && (
                 <div className="d-flex flex-wrap">
                   <div className="col-auto px-0">
-                    <Image width={150} height={150} src={image} alt="" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img width={150} height={150} src={image} alt="" />
                   </div>
                   <div className="col px-0 d-flex align-items-center">
                     <div className="col-auto">
@@ -130,6 +138,7 @@ function CreateNewsForm({ closeForm }) {
               )}
             </label>
             <Input
+              ref={fileInputRef}
               id="image"
               className="d-none"
               name="image"
@@ -193,7 +202,6 @@ function CreateNewsForm({ closeForm }) {
             bullist numlist outdent indent | help",
               }}
               onEditorChange={(e) => {
-                console.log(e);
                 formik.setFieldValue("content", e);
               }}
             />

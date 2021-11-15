@@ -130,18 +130,36 @@ function UpdateUserForm({ user }) {
         )}
         <hr className="hr-1 my-4" />
         <div className="row align-items-center">
-          <div className="col-auto pr-0 ">
-            <button type="submit" disabled="" className=" btn blue-btn">
+          <div className="col-6 col-sm-auto pr-0 ">
+            <button
+              disabled={!formik.isValid || !formik.dirty}
+              type="submit"
+              className="w-100 btn blue-btn"
+            >
               Save Changes
             </button>
           </div>
-          <div className="col-auto">
-            <button disabled="" className=" btn light-btn">
-              No Changes
+          <div className="col-6 col-sm-auto">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                formik.resetForm();
+              }}
+              disabled={!formik.isValid || !formik.dirty}
+              className="btn light-btn"
+            >
+              {formik.dirty ? "Reset" : "No"} Changes
             </button>
           </div>
-          <div className="ml-md-auto col col-md-auto mt-3">
-            <button className="btn light-red-btn w-100">Delete</button>
+
+          <div className="ml-sm-auto col col-sm-auto mt-3 mt-sm-0">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteUser();
+              }}
+              className="w-100 btn light-red-btn"
+            >Delete</button>
           </div>
         </div>
       </form>

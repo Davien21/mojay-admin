@@ -2,7 +2,7 @@ import styles from "./update-media-resource-form.module.css";
 import { Input } from "../../Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { slugify } from "../../../utils/slugify";
 import { formatSize } from "../../../utils/format-size";
 import { useLoadingContext } from "../../../contexts/loadingContext";
@@ -29,6 +29,7 @@ function UpdateMediaResourceForm({ media }) {
     file: "",
   });
 
+  const fileInputRef = useRef(null);
   const [allInfo, setAllInfo] = useState({ ...media });
 
   const validationSchema = Yup.object({
@@ -105,14 +106,20 @@ function UpdateMediaResourceForm({ media }) {
                 </p>
               </div>
             )}
-            <label htmlFor="file" className={`${styles["upload-file"]} `}>
+            <div className={`${styles["upload-file"]} `}>
               {!file && (
                 <div className="row">
                   <div className="col px-0 d-flex align-items-center">
                     <div className="col-auto">
-                      <span className="btn font-weight-semi-bold light-btn stick">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef?.current?.click();
+                        }}
+                        className="btn font-weight-semi-bold light-btn stick"
+                      >
                         Change File
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -122,9 +129,15 @@ function UpdateMediaResourceForm({ media }) {
                 <div className="row">
                   <div className="col px-0 d-flex align-items-center">
                     <div className="col-auto">
-                      <span className="btn font-weight-semi-bold light-btn stick">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef?.current?.click();
+                        }}
+                        className="btn font-weight-semi-bold light-btn stick"
+                      >
                         Change
-                      </span>
+                      </button>
                     </div>
                     <div className="col-auto px-0">
                       <button
@@ -151,8 +164,9 @@ function UpdateMediaResourceForm({ media }) {
                   </div>
                 </div>
               )}
-            </label>
+            </div>
             <Input
+              ref={fileInputRef}
               id="file"
               className="d-none"
               name="file"
@@ -168,34 +182,34 @@ function UpdateMediaResourceForm({ media }) {
 
         <hr className="hr-1 mt-0 mb-4" />
         <div className="row align-items-center">
-          <div className="col-auto pr-0 ">
+        <div className="col-6 col-sm-auto pr-0 ">
             <button
               type="submit"
               disabled={!formik.isValid || !formik.dirty}
-              className=" btn blue-btn"
+              className="w-100 btn blue-btn"
             >
               Save Changes
             </button>
           </div>
-          <div className="col-auto">
+          <div className="col-6 col-sm-auto">
             <button
               onClick={() => {
                 formik.resetForm();
                 setFile("");
               }}
               disabled={!formik.dirty}
-              className=" btn light-btn"
+              className="w-100 btn light-btn"
             >
               {formik.dirty ? "Reset" : "No"} Changes
             </button>
           </div>
-          <div className="ml-auto col-auto">
+          <div className="ml-sm-auto col col-sm-auto mt-3 mt-sm-0">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 handleDeleteMedia();
               }}
-              className="btn light-red-btn"
+              className="w-100 btn light-red-btn"
             >
               Delete
             </button>

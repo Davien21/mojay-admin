@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import styles from "./input.module.css";
 import EyeIcon from "./../Icons/EyeIcon";
 
-function Input({ type, onClick, label, className, id, name, formik, ...rest }) {
+function Input(props, ref) {
+  const { type, onClick, label, className, id, name, formik, ...rest } = props;
   const [inputType, setType] = useState(type);
   const wasPassword = type === "password";
   const handleTogglePasswordView = (e) => {
@@ -42,6 +43,7 @@ function Input({ type, onClick, label, className, id, name, formik, ...rest }) {
           onClick={onClick}
           error={error}
           {...rest}
+          ref={ref && ref}
           placeholder={placeholder}
           className="form-control col"
         />
@@ -54,6 +56,8 @@ function Input({ type, onClick, label, className, id, name, formik, ...rest }) {
       {error && <div className={`${styles["error-message"]}`}>{error}</div>}
     </div>
   );
-}
+};
+
+Input = forwardRef(Input)
 
 export { Input };

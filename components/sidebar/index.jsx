@@ -27,11 +27,15 @@ function Sidebar() {
     <aside className={`${styles["container"]}`}>
       <div>
         <div className={`d-flex flex-wrap w-100 ${styles["details"]}`}>
-          <div className="col pl-4 pr-0 small-text d-flex align-items-center">
-            <span className="font-weight-light col-4 px-0 no-word-wrap">Signed in as</span>
-            <span className={`font-weight-bold px-1`}>
+          <div className="col pl-4 pr-0 small-text d-flex flex-wrap align-items-center">
+            <span className="font-weight-light col-auto pl-0 pr-2 no-word-wrap">
+              Signed in as
+            </span>
+            <span className={`font-weight-bold col-auto px-0`}>
               {allData?.currentUser?.name}
             </span>
+          </div>
+          <div className="col-auto">
             <Link href="/login" passHref replace>
               <button
                 onClick={logout}
