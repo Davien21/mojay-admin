@@ -37,6 +37,8 @@ function CreateMediaResourceForm({ closeForm }) {
         closeForm();
         toast.success(`${values.name} was uploaded successfully`);
         resetForm();
+        setFile(null);
+
         mutate(`${backendUrl}/all`);
       } catch (error) {
         const message = apiErrorMessage(error);
@@ -88,9 +90,15 @@ function CreateMediaResourceForm({ closeForm }) {
                 <div className="row">
                   <div className="col px-0 d-flex align-items-center">
                     <div className="col-auto">
-                      <span className="btn font-weight-semi-bold light-btn stick">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef?.current?.click();
+                        }}
+                        className="btn font-weight-semi-bold light-btn stick"
+                      >
                         Change
-                      </span>
+                      </button>
                     </div>
                     <div className="col-auto px-0">
                       <button

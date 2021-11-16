@@ -3,16 +3,15 @@ import "../styles/globals.css";
 import "../styles/extra-responsive.css";
 
 import { AnimatePresence } from "framer-motion";
+import Head from "next/head";
 
 import PageTransition from "./../components/pageTransition/index";
 import useRouteChangeHandler from "./../hooks/useRouteChangeHandler";
-import { DataProvider, useDataContext } from "../contexts/dataContext";
-import { useEffect } from "react";
+import { DataProvider } from "../contexts/dataContext";
 import { LoadingProvider } from "./../contexts/loadingContext";
 import { ToastProvider } from "./../contexts/toastContext";
 import { Loader } from "../components/Loader";
 import { Toast } from "../components/Toasts";
-import Head from "next/head";
 import { deslugify } from "./../utils/deslugify";
 
 function MyApp({ Component, pageProps, router }) {
